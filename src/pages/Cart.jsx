@@ -4,18 +4,26 @@ import {
   useEffect,
 } from "react"
 
-import { useNavigate } from "react-router-dom"
+import {
+  useNavigate,
+  Link,
+} from "react-router-dom"
 
 import { CartContext } from "../context/CartContext"
+
+import { AuthContext } from "../context/AuthContext"
 
 function Cart() {
   const {
     cart,
     removeFromCart,
-    totalPrice,
   } = useContext(CartContext)
 
-  const navigate = useNavigate()
+  const { user } =
+    useContext(AuthContext)
+
+  const navigate =
+    useNavigate()
 
   const [cartItems, setCartItems] =
     useState([])
@@ -26,10 +34,15 @@ function Cart() {
   }, [cart])
 
   // Increase Quantity
-  const increaseQty = (index) => {
-    const updatedCart = [...cartItems]
+  const increaseQty = (
+    index
+  ) => {
+    const updatedCart = [
+      ...cartItems,
+    ]
 
-    updatedCart[index].quantity += 1
+    updatedCart[index]
+      .quantity += 1
 
     setCartItems(updatedCart)
 
@@ -40,11 +53,19 @@ function Cart() {
   }
 
   // Decrease Quantity
-  const decreaseQty = (index) => {
-    const updatedCart = [...cartItems]
+  const decreaseQty = (
+    index
+  ) => {
+    const updatedCart = [
+      ...cartItems,
+    ]
 
-    if (updatedCart[index].quantity > 1) {
-      updatedCart[index].quantity -= 1
+    if (
+      updatedCart[index]
+        .quantity > 1
+    ) {
+      updatedCart[index]
+        .quantity -= 1
     }
 
     setCartItems(updatedCart)
@@ -56,12 +77,14 @@ function Cart() {
   }
 
   // Total
-  const finalTotal = cartItems.reduce(
-    (total, item) =>
-      total +
-      item.price * item.quantity,
-    0
-  )
+  const finalTotal =
+    cartItems.reduce(
+      (total, item) =>
+        total +
+        item.price *
+          item.quantity,
+      0
+    )
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 md:p-10">
@@ -72,19 +95,23 @@ function Cart() {
         </h1>
 
         <div className="bg-black text-white px-5 py-3 rounded-xl text-lg font-semibold">
-          Items ({cartItems.length})
+          Items (
+          {cartItems.length})
         </div>
       </div>
 
       {/* Empty Cart */}
-      {cartItems.length === 0 ? (
+      {cartItems.length ===
+      0 ? (
         <div className="bg-white p-10 rounded-3xl shadow-xl text-center">
           <h2 className="text-3xl font-bold mb-5">
             Your Cart is Empty 😢
           </h2>
 
           <p className="text-gray-500 text-lg">
-            Add some products to continue shopping.
+            Add some products
+            to continue
+            shopping.
           </p>
 
           <button
@@ -101,22 +128,31 @@ function Cart() {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
             {cartItems.map(
-              (item, index) => (
+              (
+                item,
+                index
+              ) => (
                 <div
                   key={index}
                   className="bg-white rounded-3xl shadow-lg p-5 flex flex-col md:flex-row gap-6 items-center"
                 >
                   {/* Image */}
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={
+                      item.image
+                    }
+                    alt={
+                      item.name
+                    }
                     className="w-40 h-40 object-contain"
                   />
 
                   {/* Info */}
                   <div className="flex-1">
                     <h2 className="text-2xl font-bold">
-                      {item.name}
+                      {
+                        item.name
+                      }
                     </h2>
 
                     <p className="text-gray-500 mt-2">
@@ -136,7 +172,9 @@ function Cart() {
                       {(
                         item.price *
                         item.quantity
-                      ).toFixed(2)}
+                      ).toFixed(
+                        2
+                      )}
                     </p>
 
                     {/* Quantity */}
@@ -153,7 +191,9 @@ function Cart() {
                       </button>
 
                       <span className="text-2xl font-bold">
-                        {item.quantity}
+                        {
+                          item.quantity
+                        }
                       </span>
 
                       <button
@@ -193,15 +233,21 @@ function Cart() {
 
             <div className="space-y-5 text-lg">
               <div className="flex justify-between">
-                <span>Total Items</span>
+                <span>
+                  Total Items
+                </span>
 
                 <span>
-                  {cartItems.length}
+                  {
+                    cartItems.length
+                  }
                 </span>
               </div>
 
               <div className="flex justify-between">
-                <span>Subtotal</span>
+                <span>
+                  Subtotal
+                </span>
 
                 <span>
                   $
@@ -212,15 +258,21 @@ function Cart() {
               </div>
 
               <div className="flex justify-between">
-                <span>Shipping</span>
+                <span>
+                  Shipping
+                </span>
 
-                <span>Free</span>
+                <span>
+                  Free
+                </span>
               </div>
 
               <hr />
 
               <div className="flex justify-between text-2xl font-bold">
-                <span>Total</span>
+                <span>
+                  Total
+                </span>
 
                 <span>
                   $
@@ -233,17 +285,23 @@ function Cart() {
 
             {/* Buttons */}
             <div className="mt-10 flex flex-col gap-5">
+
               {/* Checkout */}
-              <button
-                onClick={() =>
-                  navigate(
-                    "/checkout"
-                  )
-                }
-                className="bg-black text-white py-4 rounded-xl text-lg hover:bg-gray-800 transition"
-              >
-                Proceed to Checkout
-              </button>
+              {user ? (
+                <Link
+                  to="/checkout"
+                  className="block text-center bg-green-600 text-white py-4 rounded-xl text-lg hover:bg-green-700 transition"
+                >
+                  Proceed To Checkout
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="block text-center bg-black text-white py-4 rounded-xl text-lg hover:bg-gray-800 transition"
+                >
+                  Login To Checkout
+                </Link>
+              )}
 
               {/* Continue Shopping */}
               <button

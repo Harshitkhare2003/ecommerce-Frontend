@@ -45,27 +45,40 @@
   />
 
   {/* Login Logout */}
-  <div className="flex items-center gap-4">
-    {user ? (
-      <>
-        <span className="text-sm text-gray-300 hidden lg:block">
-          {user.email}
-        </span>
+  {/* Login Logout */}
+<div className="flex items-center gap-4">
+  {user ? (
+    <>
+      <Link
+        to="/checkout"
+        className="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition"
+      >
+        Checkout
+      </Link>
 
-        <button
-          onClick={logout}
-          className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
-        >
-          Logout
-        </button>
-      </>
-    ) : (
+      <button
+        onClick={logout}
+        className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <>
       <Link
         to="/login"
         className="bg-white text-black px-5 py-2 rounded-xl font-semibold hover:bg-gray-200 transition"
       >
         Login
       </Link>
-    )}
-  </div>
+
+      <Link
+        to="/checkout"
+        className="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition"
+      >
+        Checkout
+      </Link>
+    </>
+  )}
+</div>
 </nav>
