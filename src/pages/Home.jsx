@@ -8,7 +8,7 @@ import ProductCard from "../components/ProductCard"
 
 import { CartContext } from "../context/CartContext"
 
-function Home({ search }) {
+function Home({ search, setSearch }) {
   const { cart } =
     useContext(CartContext)
 

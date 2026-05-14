@@ -1,7 +1,5 @@
 import {
   useContext,
-  useState,
-  useEffect,
 } from "react"
 
 import {
@@ -17,6 +15,8 @@ function Cart() {
   const {
     cart,
     removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
   } = useContext(CartContext)
 
   const { user } =
@@ -25,60 +25,23 @@ function Cart() {
   const navigate =
     useNavigate()
 
-  const [cartItems, setCartItems] =
-    useState([])
-
-  // Load Cart
-  useEffect(() => {
-    setCartItems(cart)
-  }, [cart])
-
   // Increase Quantity
   const increaseQty = (
     index
   ) => {
-    const updatedCart = [
-      ...cartItems,
-    ]
-
-    updatedCart[index]
-      .quantity += 1
-
-    setCartItems(updatedCart)
-
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(updatedCart)
-    )
+    increaseQuantity(index)
   }
 
   // Decrease Quantity
   const decreaseQty = (
     index
   ) => {
-    const updatedCart = [
-      ...cartItems,
-    ]
-
-    if (
-      updatedCart[index]
-        .quantity > 1
-    ) {
-      updatedCart[index]
-        .quantity -= 1
-    }
-
-    setCartItems(updatedCart)
-
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(updatedCart)
-    )
+    decreaseQuantity(index)
   }
 
   // Total
   const finalTotal =
-    cartItems.reduce(
+    cart.reduce(
       (total, item) =>
         total +
         item.price *
@@ -96,12 +59,12 @@ function Cart() {
 
         <div className="bg-black text-white px-5 py-3 rounded-xl text-lg font-semibold">
           Items (
-          {cartItems.length})
+          {cart.length})
         </div>
       </div>
 
       {/* Empty Cart */}
-      {cartItems.length ===
+      {cart.length ===
       0 ? (
         <div className="bg-white p-10 rounded-3xl shadow-xl text-center">
           <h2 className="text-3xl font-bold mb-5">
@@ -127,7 +90,7 @@ function Cart() {
         <div className="grid lg:grid-cols-3 gap-10">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
-            {cartItems.map(
+            {cart.map(
               (
                 item,
                 index
@@ -239,7 +202,7 @@ function Cart() {
 
                 <span>
                   {
-                    cartItems.length
+                    cart.length
                   }
                 </span>
               </div>

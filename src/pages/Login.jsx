@@ -69,33 +69,42 @@ function Login() {
     setError("")
 
     // Validation
-    if (
-      !email ||
-      !password
-    ) {
-      return setError(
-        "Please fill all fields"
-      )
-    }
+    if (isLogin) {
+      if (!email || !password) {
+        return setError(
+          "Please fill all fields"
+        )
+      }
+    } else {
+      if (
+        !name ||
+        !email ||
+        !password ||
+        !confirmPassword
+      ) {
+        return setError(
+          "Please fill all fields"
+        )
+      }
 
-    if (
-      !validatePassword(
-        password
-      )
-    ) {
-      return setError(
-        "Password must contain uppercase, lowercase, number & 8 characters"
-      )
-    }
+      if (
+        !validatePassword(
+          password
+        )
+      ) {
+        return setError(
+          "Password must contain uppercase, lowercase, number & 8 characters"
+        )
+      }
 
-    if (
-      !isLogin &&
-      password !==
+      if (
+        password !==
         confirmPassword
-    ) {
-      return setError(
-        "Passwords do not match"
-      )
+      ) {
+        return setError(
+          "Passwords do not match"
+        )
+      }
     }
 
     try {
@@ -265,6 +274,7 @@ function Login() {
             <p>
               Don't have an account?{" "}
               <button
+                type="button"
                 onClick={() =>
                   setIsLogin(
                     false
@@ -279,6 +289,7 @@ function Login() {
             <p>
               Already have an account?{" "}
               <button
+                type="button"
                 onClick={() =>
                   setIsLogin(
                     true
