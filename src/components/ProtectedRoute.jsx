@@ -4,14 +4,23 @@ import { useContext } from "react"
 
 import { AuthContext } from "../context/AuthContext"
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({
+  children,
+}) {
   const { user } =
     useContext(AuthContext)
 
+  // Agar login nahi
   if (!user) {
-    return <Navigate to="/login" />
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    )
   }
 
+  // Login hai
   return children
 }
 

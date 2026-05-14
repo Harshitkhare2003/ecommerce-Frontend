@@ -4,9 +4,7 @@ import {
   useEffect,
 } from "react"
 
-import {
-  auth,
-} from "../firebase"
+import { auth } from "../firebase"
 
 import {
   createUserWithEmailAndPassword,
@@ -21,14 +19,17 @@ export const AuthContext =
 function AuthProvider({
   children,
 }) {
+
+  // User State
   const [user, setUser] =
     useState(null)
 
+  // Loading State
   const [loading, setLoading] =
     useState(true)
 
   // Signup
-  const signup = (
+  const signup = async (
     email,
     password
   ) => {
@@ -40,7 +41,7 @@ function AuthProvider({
   }
 
   // Login
-  const login = (
+  const login = async (
     email,
     password
   ) => {
@@ -52,24 +53,35 @@ function AuthProvider({
   }
 
   // Logout
-  const logout = () => {
+  const logout = async () => {
     return signOut(auth)
   }
 
-  // User Listener
+  // Firebase Auth Listener
   useEffect(() => {
+
     const unsubscribe =
       onAuthStateChanged(
         auth,
         (currentUser) => {
+
+          console.log(
+            "Current User:",
+            currentUser
+          )
+
           setUser(currentUser)
+
           setLoading(false)
         }
       )
 
-    return unsubscribe
+    return () =>
+      unsubscribe()
+
   }, [])
 
+  // Context Value
   const value = {
     user,
     signup,
@@ -81,7 +93,10 @@ function AuthProvider({
     <AuthContext.Provider
       value={value}
     >
+
+      {/* Wait until auth loads */}
       {!loading && children}
+
     </AuthContext.Provider>
   )
 }
